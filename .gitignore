@@ -1,0 +1,44 @@
+# Unityのビルド・キャッシュ・設定などを除外
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+MemoryCaptures/
+Logs/
+
+# Visual Studio関連
+.vscode/
+*.csproj
+*.sln
+*.user
+*.unityproj
+
+# Unityのメタファイル以外で不要なもの
+*.pidb
+*.suo
+
+# macOS/Linuxの隠しファイル
+.DS_Store
+.idea/
+*.swp
+
+# 除外設定（すでにある場合は追加）
+*.resS
+*.data
+*.pdb
+*.dll
+*.exe
+*.so
+*.apk
+*.aab
+*.zip
+
+# 除外したくないもの
+!*.cs
+!*.exe
+!*.dll
+!*.pdb
+!*.json
+!LearningRacers_Data/**
+!MonoBleedingEdge/**
