@@ -16,8 +16,8 @@ UnityとUnity ML-Agentsを用いたAIカーレースゲームです。
 ## 使用アセット・参考素材
 
 ### Unity Asset Store
-- AllSky Free - 10 Sky / Skybox Set（青空）
-- 8K Skybox Pack Free（夕焼けの空）
+- AllSky Free - 10 Sky / Skybox Set（空）
+- 8K Skybox Pack Free（空）
 - ARCADE: FREE Racing Car（車）
 - Cartoon Race Track Spielberg（建物・看板・気球）
 - Simple Nature Pack（草・木）
