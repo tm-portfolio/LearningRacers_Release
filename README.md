@@ -32,7 +32,7 @@ UnityとUnity ML-Agentsを用いたAIカーレースゲームです。
 ### 効果音・画像・アイコン
 - DOVA-SYNDROME：https://dova-s.jp/bgm
 - 効果音ラボ：https://soundeffect-lab.info/
-- OtoLogic：https://otologic.jp/（※商用利用可・クレジット必須）
+- OtoLogic：https://otologic.jp/（※商用利用可・クレジット必須）  
 　- 使用素材：打撃06、Countdown06  
 　- クレジット表記：音素材：OtoLogic（https://otologic.jp）
 - SVG Repo：https://www.svgrepo.com/
