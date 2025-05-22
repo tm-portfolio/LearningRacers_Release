@@ -42,7 +42,7 @@ UnityとUnity ML-Agentsを用いたAIカーレースゲームです。
 - SVG Repo：https://www.svgrepo.com/
 
 ### 書籍・技術資料
-- 『Unityではじめる機械学習・強化学習』（布留川 英一）
+- 『Unityではじめる機械学習・強化学習 Unity ML-Agents 実践ゲームプログラミング v2.2対応版』（布留川 英一）
 - 『Unity2021 3D/2Dゲーム開発実践入門』（吉谷 幹人）
 - 『Unity の教科書 Unity 2019完全対応版』（北村 愛美）
 - Unity 公式マニュアル：https://docs.unity3d.com/ja
