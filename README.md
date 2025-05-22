@@ -29,12 +29,16 @@ UnityとUnity ML-Agentsを用いたAIカーレースゲームです。
 - FREE Stylized PBR Textures Pack（芝生）
 - FREE Casual Game SFX Pack（SE）
 
+※一部の3Dオブジェクトは、外部サイトで公開されていたモデルを参考に、Blenderで再現・拡大して使用しています。  
+当該モデルのライセンスが明示されていないため、個人制作およびポートフォリオ提出の範囲内でのみ使用しています。  
+再配布や商用利用は行っておりません。
+
 ### 効果音・画像・アイコン
 - DOVA-SYNDROME：https://dova-s.jp/bgm
 - 効果音ラボ：https://soundeffect-lab.info/
 - OtoLogic：https://otologic.jp/（※商用利用可・クレジット必須）  
-　- 使用素材：打撃06、Countdown06  
-　- クレジット表記：音素材：OtoLogic（https://otologic.jp）
+  - 使用素材：打撃06、Countdown06  
+  - クレジット表記：音素材：OtoLogic（https://otologic.jp）
 - SVG Repo：https://www.svgrepo.com/
 
 ### 書籍・技術資料
@@ -43,8 +47,9 @@ UnityとUnity ML-Agentsを用いたAIカーレースゲームです。
 - 『Unity の教科書 Unity 2019完全対応版』（北村 愛美）
 - Unity 公式マニュアル：https://docs.unity3d.com/ja
 - ML-Agents 公式：https://github.com/Unity-Technologies/ml-agents
-- Friedrich von Schiller,Reinforcement Learning a Selfdriving Car AI in Unity,
-- https://towardsdatascience.com/reinforcementlearningaselfdrivingcaraiinunity60b0e7a10d9e
+
+※参考にしていた以下のページは現在リンク切れのため、アーカイブ確認や内容の復元は行っていません。  
+- https://towardsdatascience.com/reinforcementlearningaselfdrivingcaraiinunity60b0e7a10d9e  
 - https://github.com/xstreck1/cArdrIve
 
 ## ライセンスについて
@@ -53,7 +58,7 @@ UnityとUnity ML-Agentsを用いたAIカーレースゲームです。
 商用利用が可能なもののみを選んでいますが、一部の素材にはクレジット表記が必要な場合があります。
 
 本リポジトリは、ポートフォリオ提出および技術参考用として限定公開しています。  
-掲載しているコードや素材の 無断転載・再配布・商用利用・改変 はご遠慮ください。  
+掲載しているコードや素材の無断転載・再配布・商用利用・改変はご遠慮ください。  
 各素材の著作権は、それぞれの提供元に帰属しています。
 
 ---
