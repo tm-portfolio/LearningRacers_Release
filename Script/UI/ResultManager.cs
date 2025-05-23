@@ -17,10 +17,8 @@ public class ResultManager : MonoBehaviour
     public static List<PlayerResult> LastRaceResults;
 
     // リザルト登録
-    public void RegisterFinish(string name, float raceStartTime)
+    public void RegisterFinish(string name, float finishTime)
     {
-        float finishTime = Time.time - raceStartTime;
-
         raceResults.Add(new PlayerResult
         {
             Name = name,
@@ -80,7 +78,30 @@ public class ResultManager : MonoBehaviour
 
         foreach (var car in ranked)
         {
-            RegisterFinish(car.DriverName, Time.time); // 登録時点の時間で計算
+            if (!GameManager.Instance.carFinishTimes.TryGetValue(car.DriverName, out float finishTime))
+            {
+                // プレイヤーがゴール済みなら、それより遅い仮タイムを割り当て
+                float playerTime = GameManager.Instance.carFinishTimes.TryGetValue(playerName, out float pt) ? pt : 38f;
+                finishTime = Mathf.Min(playerTime + Random.Range(3.0f, 7.0f), 45f); // 上限を45秒に制限
+                finishTime = (float)System.Math.Round(finishTime, 2); // 小数第2位で丸める
+
+                Debug.LogWarning($"[ResultManager] ゴールしていないAI：{car.DriverName} に仮タイム {finishTime:F2} を割当");
+            }
+
+            RegisterFinish(car.DriverName, finishTime);
         }
+
+        //foreach (var car in ranked)
+        //{
+        //    // AIの正確なゴールタイムを取得
+        //    float finishTime = 0f;
+
+        //    if (GameManager.Instance.carFinishTimes.TryGetValue(car.DriverName, out float value))
+        //        finishTime = value;
+        //    else
+        //        finishTime = Time.time - GameManager.Instance.GetRaceStartTime(); // バックアップ（異常時）
+
+        //    RegisterFinish(car.DriverName, finishTime);
+        //}
     }
 }

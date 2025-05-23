@@ -103,20 +103,21 @@ public class UIManager : MonoBehaviour
             reverseWarningText.gameObject.SetActive(isActive);
     }
 
-    // Tabキーで呼ばれる：ポーズメニューを開閉切り替え
+    // Tabキーで呼ばれる：ポーズメニューを「開くだけ」に変更
     public void TogglePauseMenu()
     {
         if (pauseMenuUI == null) return;
 
-        bool isActive = pauseMenuUI.activeSelf;
-        pauseMenuUI.SetActive(!isActive);
+        if (pauseMenuUI.activeSelf) return; // すでに開いてたら何もしない
 
-        // 開閉音を鳴らす（共通SE）
+        pauseMenuUI.SetActive(true);
+
+        // 開音を鳴らす（共通SE）
         AudioManager.Instance?.PlayCommonSE();
 
-        // ポーズ中はゲームを一時停止（Time.timeScale = 0）
-        Time.timeScale = isActive ? 1f : 0f;
-        pauseMenuOpen = !isActive;
+        // ゲームを一時停止
+        Time.timeScale = 0f;
+        pauseMenuOpen = true;
     }
 
     // ポーズメニューを閉じてゲーム再開

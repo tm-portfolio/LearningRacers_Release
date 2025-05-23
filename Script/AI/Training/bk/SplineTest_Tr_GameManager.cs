@@ -3,20 +3,20 @@ using Unity.MLAgents;
 using System.Collections.Generic;
 using System.Linq;
 
-// 学習中のAIカー（CarAgent）を管理するクラス。
-// タイムアウト処理、チェックポイント通過処理、ゴール処理を担当。
-public class Tr_GameManager : MonoBehaviour
+/// <summary>
+/// 学習中のAIカー（CarAgent）を管理するクラス。
+/// タイムアウト処理、チェックポイント通過処理、ゴール処理を担当。
+/// </summary>
+public class SplineTest_Tr_GameManager : MonoBehaviour
 {
-    public static Tr_GameManager Instance;
+    public static SplineTest_Tr_GameManager Instance;
 
-    [Header("設定")]
+    public int totalCheckpoints = 4;      // チェックポイントの総数
     public int targetLaps = 1;            // ゴールするための必要ラップ数
-    public int totalCheckpoints = 4;      // コース上に設置されているチェックポイントの数
-    public float maxEpisodeTime = 30f;    // タイムアウト秒数
+    public float maxEpisodeTime = 50f;    // タイムアウト秒数
 
-    [Header("車両")]
     private List<ICarInfo> agents = new();                        // すべてのエージェント
-    public Dictionary<ICarInfo, float> agentStartTimes = new();   // エージェントごとの開始時刻
+    public Dictionary<ICarInfo, float> agentStartTimes = new();  // エージェントごとの開始時刻
 
     private void Awake()
     {
@@ -24,7 +24,6 @@ public class Tr_GameManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    // レース初期化処理（ゲーム開始時に1度だけ実行される）
     private void Start()
     {
         // ICarInfo を実装したオブジェクト（CarAgent）を取得
@@ -35,10 +34,9 @@ public class Tr_GameManager : MonoBehaviour
             agentStartTimes[agent] = Time.time;
         }
 
-        Debug.Log($"[Tr_GameManager] 登録エージェント数: {agents.Count}");
+        Debug.Log($"[SplineTest_Tr_GameManager] 登録エージェント数: {agents.Count}");
     }
 
-    // 毎フレーム処理
     private void Update()
     {
         foreach (var agent in agents)
@@ -58,29 +56,31 @@ public class Tr_GameManager : MonoBehaviour
         }
     }
 
-    // エージェントがチェックポイントを通過したときに呼び出される
-    public void OnAgentPassedCheckpoint(ICarInfo agent, int index)
-    {
-        if (agent is not Agent unityAgent) return;
+    ///// <summary>
+    ///// エージェントがチェックポイントを通過したときに呼び出される
+    ///// </summary>
+    //public void OnAgentPassedCheckpoint(ICarInfo agent, int index)
+    //{
+    //    if (agent is not Agent unityAgent) return;
 
-        if (agent.PassCheckpoint(index))
-        {
-            unityAgent.AddReward(0.3f); // 正しい順序で通過
-            Debug.Log($"[CP] {agent.DriverName} → CP{index} 正常通過");
-        }
-        else
-        {
-            unityAgent.AddReward(-0.2f); // 逆走またはスキップ
-            Debug.Log($"[CP] {agent.DriverName} → CP{index} 誤通過（逆走/スキップ）");
-        }
-    }
+    //    if (agent.PassCheckpoint(index))
+    //    {
+    //        unityAgent.AddReward(0.3f); // 正しい順序で通過
+    //        Debug.Log($"[CP] {agent.DriverName} → CP{index} 正常通過");
+    //    }
+    //    else
+    //    {
+    //        unityAgent.AddReward(-0.2f); // 逆走またはスキップ
+    //        Debug.Log($"[CP] {agent.DriverName} → CP{index} 誤通過（逆走/スキップ）");
+    //    }
+    //}
 
-    // エージェントがゴールラインを通過したときに呼び出される
+    /// <summary>
+    /// エージェントがゴールラインを通過したときに呼び出される
+    /// </summary>
     public void OnAgentReachedGoal(ICarInfo agent)
     {
-        Debug.Log($"[DEBUG] {agent.DriverName} ゴール処理呼び出し、CP数 = {agent.PassedCheckpoints.Count}");
-
-        if (agent.PassedCheckpoints.Count < totalCheckpoints) return;
+        //if (agent.PassedCheckpoints.Count < totalCheckpoints) return;
 
         agent.FinishLap();
 
@@ -88,7 +88,7 @@ public class Tr_GameManager : MonoBehaviour
 
         // 各ラップ完了ごとの報酬
         unityAgent.AddReward(0.3f);
-        Debug.Log($"[Goal] {agent.DriverName} → Lap {agent.CurrentLap} 完了（+0.3）");        
+        Debug.Log($"[Goal] {agent.DriverName} → Lap {agent.CurrentLap} 完了（+0.3）");
 
         // 経過時間に応じたボーナス（早くゴールすると高得点）
         float elapsed = Time.time - agentStartTimes[agent];
@@ -105,7 +105,7 @@ public class Tr_GameManager : MonoBehaviour
             unityAgent.EndEpisode();
             Debug.Log($"[Goal] {agent.DriverName} → 完走（+{1.0f}）");
 
-            //// 他のエージェントも同時に終了
+            //// 他のエージェントも同時に終了（公平性のため）
             //foreach (var other in agents)
             //{
             //    if (other != agent && other is Agent otherAgent)
@@ -115,7 +115,7 @@ public class Tr_GameManager : MonoBehaviour
             //}
         }
 
-        agent.PassedCheckpoints.Clear(); // 次のラップに備えて初期化
+        //agent.PassedCheckpoints.Clear(); // 次のラップに備えて初期化
     }
 
 }

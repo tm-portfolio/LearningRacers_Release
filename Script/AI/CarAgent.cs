@@ -4,8 +4,8 @@ using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 
-/// 推論用のAIカー。学習は行わず、動作と報酬計算のみ担当。
-/// GameManagerから直接制御され、レースシーンで使用される。
+// 推論用のAIカー。学習は行わず、動作と報酬計算のみ担当。
+// GameManagerから直接制御され、レースシーンで使用される。
 public class CarAgent : Agent, ICarInfo
 {
     public float speed = 30f;            // 最大速度
@@ -59,8 +59,8 @@ public class CarAgent : Agent, ICarInfo
         sensor.AddObservation(ObserveRay(1.5f, -1.0f, -30f));   // 前左斜め
         sensor.AddObservation(ObserveRay(2.5f, 0f, 0f));        // 長距離の前方
 
-        float rightNear = ObserveRay(1.5f, 2.0f, 45f);          
-        float leftNear = ObserveRay(1.5f, -2.0f, -45f);         
+        float rightNear = ObserveRay(1.5f, 2.0f, 45f);
+        float leftNear = ObserveRay(1.5f, -2.0f, -45f);
         sensor.AddObservation(rightNear);                       // 右前斜め（広め）
         sensor.AddObservation(leftNear);                        // 左前斜め（広め）
 
@@ -68,7 +68,7 @@ public class CarAgent : Agent, ICarInfo
         float proximityPenalty = (Mathf.Clamp01(1f - rightNear) + Mathf.Clamp01(1f - leftNear)) * 0.05f * (speed / 30f);
         AddReward(-proximityPenalty);
 
-        // 現在速度を観測（正規化）
+        // 現在速度を観測
         sensor.AddObservation(rb.velocity.magnitude / 30f);
     }
 
@@ -145,7 +145,6 @@ public class CarAgent : Agent, ICarInfo
         return reward;
     }
 
-
     private void OnCollisionEnter(Collision other)
     {
         //if (other.gameObject.CompareTag("wall"))
@@ -207,6 +206,10 @@ public class CarAgent : Agent, ICarInfo
         if (CurrentLap >= GameManager.Instance.targetLaps)
         {
             Debug.Log($"[AICar] {DriverName} → ゴール");
+
+            // ゴール時刻を記録
+            float finishTime = Time.time - GameManager.Instance.GetRaceStartTime(); // raceStartTime取得用にメソッドを用意
+            GameManager.Instance.carFinishTimes[DriverName] = finishTime;
         }
     }
 

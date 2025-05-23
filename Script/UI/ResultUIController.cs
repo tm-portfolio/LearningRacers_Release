@@ -64,13 +64,13 @@ public class ResultUIController : MonoBehaviour
 
         var results = ResultManager.LastRaceResults;
 
-        /*
+        /* 複数の車とレース時に使用予定
         if (results != null)
         {
             Debug.Log($"[ResultUI] 結果あり: {results.Count}件");
 
             // 表示用画像の初期化（最大3位まで対応）
-            results = results.OrderBy(r => r.Position).ToList(); // ← 追加！
+            results = results.OrderBy(r => r.Position).ToList();
 
             for (int i = 0; i < results.Count && i < rankTexts.Length; i++)
             {
@@ -115,47 +115,32 @@ public class ResultUIController : MonoBehaviour
 
         // 勝敗テキストの表示（1対1前提）
         string playerName = PlayerPrefs.GetString("PlayerName", "player");
-        var playerResult = results.FirstOrDefault(r => r.Name == playerName);
+        var sorted = ResultManager.LastRaceResults.OrderBy(r => r.Time).ToList(); // タイム順
 
-        // --- 1対1の勝敗表示処理 ---
-        if (playerResult != null && results.Count == 2)
+        if (sorted.Count == 2)
         {
             // メダルを非表示に
-            foreach (var img in rankImages) if (img != null) img.gameObject.SetActive(false);        
+            foreach (var img in rankImages) if (img != null) img.gameObject.SetActive(false);
 
             resultText.gameObject.SetActive(false);
             foreach (var txt in testResultTexts) if (txt != null) txt.gameObject.SetActive(true);
 
-            var opponentResult = results.FirstOrDefault(r => r.Name != playerName);
-
-            if (testResultTexts.Length >= 2)
+            // 上から順に1位・2位を表示
+            for (int i = 0; i < 2; i++)
             {
-                float playerTime = playerResult.Time;
-                float opponentTime = opponentResult.Time;
-
-                // AIタイム未設定なら、自然な値に補正
-                if (opponentTime <= 0.1f && playerResult.Position < opponentResult.Position)
+                if (testResultTexts.Length > i)
                 {
-                    opponentTime = Mathf.Max(playerTime + Random.Range(3f, 6f), 42f);
+                    testResultTexts[i].text = $"{i + 1}位：{sorted[i].Name}（{sorted[i].Time:F2}秒）";
                 }
-
-                testResultTexts[0].text = $"{playerResult.Position}位：{playerResult.Name}（{playerTime:F2}秒）";
-                testResultTexts[1].text = $"{opponentResult.Position}位：{opponentResult.Name}（{opponentTime:F2}秒）";
             }
 
-            // 勝敗画像とSE表示
-            if (playerResult.Position < opponentResult.Position)
-            {
+            // 勝敗画像判定
+            if (sorted[0].Name == playerName)
                 ShowResultImage("win");
-            }
-            else if (playerResult.Position > opponentResult.Position)
-            {
+            else if (sorted[1].Name == playerName)
                 ShowResultImage("lose");
-            }
             else
-            {
                 ShowResultImage("draw");
-            }
         }
         else
         {
@@ -352,17 +337,16 @@ public class ResultUIController : MonoBehaviour
         panel2.SetActive(false);
         panel1.SetActive(true);
 
-        // 勝敗再表示用（1対1）
         var results = ResultManager.LastRaceResults;
         string playerName = PlayerPrefs.GetString("PlayerName", "player");
-        var playerResult = results.FirstOrDefault(r => r.Name == playerName);
-        var opponentResult = results.FirstOrDefault(r => r.Name != playerName);
 
-        if (playerResult != null && opponentResult != null)
+        if (results != null && results.Count == 2)
         {
-            if (playerResult.Position < opponentResult.Position)
+            var sorted = results.OrderBy(r => r.Time).ToList();
+
+            if (sorted[0].Name == playerName)
                 ShowResultImage("win");
-            else if (playerResult.Position > opponentResult.Position)
+            else if (sorted[1].Name == playerName)
                 ShowResultImage("lose");
             else
                 ShowResultImage("draw");

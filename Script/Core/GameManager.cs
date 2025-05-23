@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     [Header("設定")]
-    public int targetLaps = 3;       // プレイヤーがゴールするための必要ラップ数
+    public int targetLaps = 3;       // ゴールするための必要ラップ数
     public int totalCheckpoints = 4; // コース上に設置されているチェックポイントの数
 
     private int playerLaps = 0;         // プレイヤーが完了したラップ数
@@ -42,6 +42,9 @@ public class GameManager : MonoBehaviour
 
     public bool JustFinishedLap { get; set; } = false; // ゴール直後に一時的に表示補正を入れるためのフラグ
 
+    public Dictionary<string, float> carFinishTimes = new(); // リザルト画面用
+    public float GetRaceStartTime() => raceStartTime;        // リザルト画面用
+
     void Awake()
     {
         if (Instance == null) Instance = this;
@@ -51,6 +54,8 @@ public class GameManager : MonoBehaviour
     // レース初期化処理（ゲーム開始時に1度だけ実行される）
     void Start()
     {
+        carFinishTimes.Clear(); // 0523
+
         playerLaps = 0;
         AudioManager.Instance?.StopSE();                                            // 念のためSEを停止
         AudioManager.Instance?.PlayBGM(Resources.Load<AudioClip>("BGM_GameScene")); // BGM再生
@@ -149,7 +154,7 @@ public class GameManager : MonoBehaviour
         // 上キー入力を取得（DriveLoop制御用）
         bool accelInput = Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W);
 
-        // カウントダウン中はIdleLoopのみ再生（現在は無効化中）
+        // カウントダウン中はIdleLoopのみ再生（今回は使用しないため、無効化中）
         if (!allowDriveLoop && raceStarted)
         {
             if (!uiManager.IsPauseMenuOpen())
@@ -205,6 +210,23 @@ public class GameManager : MonoBehaviour
     {
         if (!raceStarted || car.PassedCheckpoints.Count < totalCheckpoints) return;
 
+        // ゴール時刻を記録（全車共通）
+        if (!carFinishTimes.ContainsKey(car.DriverName)
+    && car.CurrentLap >= targetLaps
+    && car.PassedCheckpoints.Count >= totalCheckpoints)
+        {
+            float finishTime = Time.time - raceStartTime;
+            carFinishTimes[car.DriverName] = finishTime;
+            Debug.Log($"[記録] {car.DriverName} ゴールタイム: {finishTime:F2}秒");
+        }
+
+        //if (!carFinishTimes.ContainsKey(car.DriverName))
+        //{
+        //    float finishTime = Time.time - raceStartTime;
+        //    carFinishTimes[car.DriverName] = finishTime;
+        //    Debug.Log($"[記録] {car.DriverName} ゴールタイム: {finishTime:F2}秒");
+        //}
+
         car.FinishLap();                // ラップ数を加算
         car.PassedCheckpoints.Clear();  // 次のラップに備えて初期化
 
@@ -247,7 +269,12 @@ public class GameManager : MonoBehaviour
         StartCoroutine(PlayCheerAfterDelay(1.0f));
         SpawnGoalFireworks();
 
-        resultManager.RegisterFinish(player.DriverName, raceStartTime);
+        // プレイヤーの正しいゴールタイムを記録してから登録
+        float playerFinishTime = Time.time - raceStartTime;
+        carFinishTimes[player.DriverName] = playerFinishTime;
+
+        resultManager.RegisterFinish(player.DriverName, playerFinishTime);
+
         StartCoroutine(resultManager.RegisterAIFinishersAfterDelay(allCars, player.DriverName, GetProgressScore));
         StartCoroutine(resultManager.ShowResultButtonAfterDelay());
 

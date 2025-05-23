@@ -28,6 +28,20 @@ public class StartMenu : MonoBehaviour
 
     void Start()
     {
+        // ======== 初期化後に削除 ========
+        // 一度だけ自己ベストランキングを初期化する
+        // for (int i = 0; i < 5; i++)
+        // {
+        //     PlayerPrefs.DeleteKey($"BestTime_{i}");
+        //     PlayerPrefs.DeleteKey($"BestTimeName_{i}");
+        //     PlayerPrefs.DeleteKey($"BestTimeDate_{i}");
+        // }
+        // PlayerPrefs.DeleteKey("CurrentTime");
+        // PlayerPrefs.Save();
+           
+        // Debug.Log("【一度だけ】自己ベストランキングを初期化しました。");
+        // ======== 上記のコードが残っていると毎回データが消えるため注意 ========
+
         AudioManager.Instance?.StopSE(); // ゲームSE停止
         nameInput.text = "player";       // 初期名
 
