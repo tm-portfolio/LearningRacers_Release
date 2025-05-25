@@ -48,7 +48,7 @@ UnityとUnity ML-Agentsを用いたAIカーレースゲームです。
 - Unity 公式マニュアル：https://docs.unity3d.com/ja
 - ML-Agents 公式：https://github.com/Unity-Technologies/ml-agents
 
-※参考にしていた以下のページは現在リンク切れのため、アーカイブ確認や内容の復元は行っていません。  
+※参考にしていた以下のページは現在リンク切れのため、アーカイブ確認や内容の復元は行っておりません。  
 - https://towardsdatascience.com/reinforcementlearningaselfdrivingcaraiinunity60b0e7a10d9e  
 - https://github.com/xstreck1/cArdrIve
 
