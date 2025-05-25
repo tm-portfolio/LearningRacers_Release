@@ -13,7 +13,7 @@ UnityとUnity ML-Agentsを用いたAIカーレースゲームです。
 - `/Game`：ビルド済みアプリ
 - `/Script`：主要スクリプト（プレイヤー・AI・UI など）
 
-## 使用アセット・参考素材
+## 使用アセット・参考資料一覧
 
 ### Unity Asset Store
 - AllSky Free - 10 Sky / Skybox Set（空）
