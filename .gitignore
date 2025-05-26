@@ -23,7 +23,7 @@ Logs/
 .idea/
 *.swp
 
-# 除外
+# 除外するもの
 *.resS
 *.data
 *.pdb

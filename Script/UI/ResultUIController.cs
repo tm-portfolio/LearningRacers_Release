@@ -213,10 +213,10 @@ public class ResultUIController : MonoBehaviour
         if (updatedIndex >= 0)
         {
             TextMeshProUGUI updateText = Instantiate(bestNameTexts[updatedIndex], bestNameTexts[updatedIndex].transform.parent);
-            updateText.text = "自己ベスト更新！";
+            updateText.text = "　自己ベスト更新！";
             updateText.fontSize = 36;
             updateText.fontStyle = FontStyles.Bold;
-            updateText.color = new Color(1f, 0.6f, 0f); // オレンジ
+            updateText.color = new Color(1.0f, 0.4f, 0.0f); // 濃いオレンジ
 
             // 位置を右横にずらす
             RectTransform original = bestNameTexts[updatedIndex].rectTransform;
